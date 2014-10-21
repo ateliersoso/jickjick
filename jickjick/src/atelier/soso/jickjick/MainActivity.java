@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,13 +46,12 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 	private SoundPlayer soundPlayer = null;
 	private RefreshScreenHandler refreshScreenHandler = null; 
 	//UIs
-
+	private SeekBar playingSeekBar = null;
+	
 	//Animation
 	Timer animator = null;
 
 	//UI Items
-	private SeekBar playingSeekBar = null;
-
 	private EditText topText;
 
 	@Override
@@ -69,11 +68,6 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 				R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 
-		// Set up UI Items
-		playingSeekBar  = (SeekBar)findViewById(R.id.playingSeekBar);
-		PlayingSeekBarEventListener seekEvent = new PlayingSeekBarEventListener();
-		playingSeekBar.setOnSeekBarChangeListener(seekEvent);
-		
 		initialize();
 
 		//Animation 
@@ -83,7 +77,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 			public void run() {
 				Message msg = new Message();
 				msg.what = REFRESH_SCREEN;
-				
+
 				refreshScreenHandler.sendMessage(msg);
 			}
 		};
@@ -96,6 +90,44 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		}
 
 	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+		playingSeekBar = (SeekBar)findViewById(R.id.playingSeekBar);
+		if (playingSeekBar != null) {
+			//임시코드. onseekbarchangelistener를 두번 안넣게 하기 위함
+			if(playingSeekBar.hasOnClickListeners() == false){
+			playingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+				
+				//손가락을 때는 시점에서 재생 위치 갱신.
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					int position = seekBar.getProgress();
+					soundPlayer.seekTo(position);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+				}
+			});
+			playingSeekBar.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			}
+		}
+	}
 
 	/**
 	 * initialize members 
@@ -105,7 +137,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		{
 			soundPlayer = new SoundPlayer(this);
 		}		
-		
+
 		if(refreshScreenHandler == null)
 		{
 			refreshScreenHandler = new RefreshScreenHandler();
@@ -178,6 +210,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
 
+
 		/**
 		 * Returns a new instance of this fragment for the given section
 		 * number.
@@ -197,6 +230,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+			
 			return rootView;
 		}
 
@@ -212,13 +246,12 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		// TODO Auto-generated method stub
 		return i+j;
 	}
-
+	
+	/**	for test method
+	 * @param view
+	 * @return
+	 */
 	public int sendMessage(View view)	{
-		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		EditText editText = (EditText)findViewById(R.id.edit_message);
-		String message = editText.getText().toString();;
-		intent.putExtra(EXTRA_MESSAGE, message);
-		startActivity(intent);
 
 		return 1;
 	}
@@ -282,7 +315,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		int currentTime = soundPlayer.getCurrentPosition();
 		int curMinute = currentTime / 1000 / 60;                       
 		int curSecond = (currentTime - (1000 * 60 * curMinute) ) / 1000;  
-		
+
 		topText = (EditText)findViewById(R.id.edit_message);
 		String message = String.format("%3d:%2d / %3d:%2d", curMinute, curSecond, minute, second);
 		topText.setText(message);
@@ -301,7 +334,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 			playingSeekBar.setMax(duration);
 			playingSeekBar.setProgress(currentPosition);
 		}
-			
+
 	}
 
 
@@ -323,31 +356,5 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 			}
 		}
 	}
-	
-	class PlayingSeekBarEventListener implements SeekBar.OnSeekBarChangeListener{
-		@Override
-		public void onStopTrackingTouch(SeekBar seekBar) {
-			// TODO Auto-generated method stub
-			int afterPosition = seekBar.getProgress();
-			soundPlayer.seekTo(afterPosition);
-			
-//			int seekMax = seekBar.getMax();
-			
-			
-		}
-		
-		@Override
-		public void onStartTrackingTouch(SeekBar seekBar) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress,
-				boolean fromUser) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
-	
+
 }
