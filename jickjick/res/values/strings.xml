@@ -23,5 +23,7 @@
     <string name="button_before_file"><![CDATA["|<<"]]></string>
     <string name="button_stop">ㅁ</string>
     <string name="button_next_sound"><![CDATA[">>|"]]></string>
+    <string name="_mp3">.mp3</string>
+    <string name="title_activity_file_list">Sound Files</string>
 
 </resources>

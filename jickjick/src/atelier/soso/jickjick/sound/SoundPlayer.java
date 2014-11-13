@@ -93,5 +93,4 @@ public class SoundPlayer {
 		// TODO Auto-generated method stub
 		mediaPlayer.seekTo(afterPosition);
 	}
-
 }
