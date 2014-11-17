@@ -1,5 +1,6 @@
 package atelier.soso.jickjick.ui.player;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -32,6 +34,7 @@ import atelier.soso.jickjick.db.DBTables.SoundFile;
 import atelier.soso.jickjick.sound.SoundPlayer;
 
 
+//전체 컨테이너 액티비티.
 public class MainActivity extends ActionBarActivity
 implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -196,6 +199,9 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 		stateManager = (StateManager)getApplicationContext();
 		stateManager.setPlayerState(PlayerState.IDLE);
+//		File externalStoragePath = getFilesDir();
+		File externalStoragePath = Environment.getExternalStorageDirectory();
+		stateManager.setCurrentPath(externalStoragePath);
 		currentA=0;
 		currentB=0;
 		fileID=0;
@@ -469,23 +475,5 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		}
 	}
 
-	//	private ABRepeatInfo currentABRepeat;
-	//	
-	//	private class FileInfo{
-	//		public int id;		//soundfile DB에 담길 테이블 아이디
-	//		public String path;
-	//		
-	//	}
-	//	
-	//	private class ABRepeatInfo{
-	//		public int start;
-	//		public int end;
-	//		
-	//		public ABRepeatInfo(int start, int end) {
-	//			this.start = start;
-	//			this.end = end;
-	//		}
-	//		
-	//	}
 
 }

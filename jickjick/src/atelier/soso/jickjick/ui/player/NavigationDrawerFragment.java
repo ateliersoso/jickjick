@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
@@ -251,16 +252,23 @@ public class NavigationDrawerFragment extends Fragment {
 
 		if (item.getItemId() == R.id.action_example) {
 			
-//			Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
 			//file 추가 화면 띄움
 			//1. get last path.
 			//
 			
 			// update the main content by replacing fragments
 			FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-			.replace(R.id.container, new FileListFragment())
-			.commit();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			
+			//사실 액티비티가 하나라 그냥 처리하지만 액션바에 있는 기능이므로 
+			transaction.add(R.id.container, new FileListFragment());
+			transaction.addToBackStack(null);
+			transaction.commit();
+			
+			
+//			fragmentManager.beginTransaction()
+//			.add(, )
+//			.commit();
 			
 			return true;
 		}

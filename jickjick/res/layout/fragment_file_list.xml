@@ -1,15 +1,56 @@
+ <!-- android:background="#ffffff" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:weightSum="10" >
+
+    <!-- top: title -->
 
     <EditText
-        android:id="@+id/edit_message"
+        android:id="@+id/path"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/title_activity_file_list" >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/title_activity_file_list" />
 
-        <requestFocus />
-    </EditText>
+    <!-- center : file items -->
+
+    <ListView
+        android:id="@+id/filelist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:divider="#242424"
+        android:dividerHeight="1dp" />
+
+    <!-- bottom : buttons -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="10" >
+
+        <Button
+            android:id="@+id/ButtonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:onClick="playSelectedItem"
+            android:text="@string/play"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/ButtonPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:onClick="addSelectedItem"
+            android:text="@string/add" />
+    </LinearLayout>
 
 </LinearLayout>

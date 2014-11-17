@@ -1,5 +1,6 @@
 package atelier.soso.jickjick;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Application;
@@ -19,6 +20,8 @@ public class StateManager extends Application {
 //	private PlayFile currentFile;
 
 	private PlayList currentPlayList;
+	private File currentPath;
+	
 
 	public boolean isLoop() {
 		return isLoop;
@@ -55,6 +58,18 @@ public class StateManager extends Application {
 	}
 	public void setFileList(ArrayList<FileInfo> fileList) {
 		this.fileList = fileList;
+	}
+	public PlayList getCurrentPlayList() {
+		return currentPlayList;
+	}
+	public void setCurrentPlayList(PlayList currentPlayList) {
+		this.currentPlayList = currentPlayList;
+	}
+	public File getCurrentPath() {
+		return currentPath;
+	}
+	public void setCurrentPath(File externalStoragePath) {
+		this.currentPath = externalStoragePath;
 	}
 
 
