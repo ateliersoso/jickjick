@@ -242,8 +242,8 @@ int drawable drawer_shadow 0x7f020057
 int drawable file_list_selector 0x7f020058
 int drawable ic_drawer 0x7f020059
 int drawable ic_launcher 0x7f02005a
-int id ButtonAdd 0x7f060043
-int id ButtonPlay 0x7f060044
+int id ButtonAdd 0x7f060044
+int id ButtonPlay 0x7f060043
 int id ButtonSelectAll 0x7f060042
 int id action_bar 0x7f06001c
 int id action_bar_activity_content 0x7f060015
@@ -359,6 +359,7 @@ int menu global 0x7f0d0000
 int menu main 0x7f0d0001
 int raw testmusic 0x7f050000
 int string _mp3 0x7f0b0023
+int string _must_implement_onarticleselectedlistener_ 0x7f0b0028
 int string abc_action_bar_home_description 0x7f0b0001
 int string abc_action_bar_up_description 0x7f0b0002
 int string abc_action_menu_overflow_description 0x7f0b0003

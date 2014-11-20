@@ -13,6 +13,7 @@ public class FileInfo {
 	private FileType fileType;
 	private boolean checked;
 	
+	private int playCount;	//재생횟수.
 //	public String getPath() {
 //		return path;
 //	}

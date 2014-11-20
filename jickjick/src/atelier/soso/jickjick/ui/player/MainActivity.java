@@ -32,11 +32,12 @@ import atelier.soso.jickjick.StateManager.PlayerState;
 import atelier.soso.jickjick.db.SoundDBOpenHelper;
 import atelier.soso.jickjick.db.DBTables.SoundFile;
 import atelier.soso.jickjick.sound.SoundPlayer;
+import atelier.soso.jickjick.ui.filelist.FileListFragment.OnPlaySoundListener;
 
 
 //전체 컨테이너 액티비티.
 public class MainActivity extends ActionBarActivity
-implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListener {
 
 	public static final String EXTRA_MESSAGE = "atelier.soso.jickjick.MESSAGE";
 
@@ -65,8 +66,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 	//UIs
 	private SeekBar playingSeekBar = null;
 	private EditText topText;
-
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,7 +113,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 			refreshTimer.schedule(screenRefreshTask, 500, 500);
 			refreshTimer.schedule(stateRefreshTask, 200, 200);
 		}
-
+		
 	}
 
 	@Override
@@ -202,6 +202,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 //		File externalStoragePath = getFilesDir();
 		File externalStoragePath = Environment.getExternalStorageDirectory();
 		stateManager.setCurrentPath(externalStoragePath);
+		stateManager.setCurrentPosition(0);
 		currentA=0;
 		currentB=0;
 		fileID=0;
@@ -391,8 +392,9 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		}
 		else
 		{
-			soundPlayer.loadMedia("TestPath");
-			soundPlayer.play("");
+			soundPlayer.playTrack(stateManager.getCurrentPosition());
+//			soundPlayer.loadMedia("TestPath");
+//			soundPlayer.play("");
 		}
 		//2. refresh view
 		refreshTimeLabel();
@@ -473,6 +475,12 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 			refreshTimeLabel();
 
 		}
+	}
+
+	@Override
+	public void onPlaySoundListner(int playOffset) {
+		// TODO Auto-generated method stub
+		soundPlayer.playTrack(0);
 	}
 
 

@@ -12,17 +12,25 @@ public class StateManager extends Application {
 	private boolean isLoop;
 	private boolean isABRepeatMode;
 
-
 	private ArrayList<ABRepeat> abRepeatList;
 	private ABRepeat currentABRepeat;
 
+	private File currentPath;			//마지막으로 이용자가 접근한 path
+
 	private ArrayList<FileInfo> fileList;
-//	private PlayFile currentFile;
+	private PlayList currentPlayList;	//
 
-	private PlayList currentPlayList;
-	private File currentPath;
+	private int currentPosition;
 	
-
+	public StateManager() {
+		abRepeatList = new ArrayList<ABRepeat>();
+		currentABRepeat = new ABRepeat(0, 0);
+		currentPath = null;
+		fileList = new ArrayList<FileInfo>();
+		currentPlayList = new PlayList();
+		currentPosition = 0;
+	} 
+	
 	public boolean isLoop() {
 		return isLoop;
 	}
@@ -71,6 +79,14 @@ public class StateManager extends Application {
 	public void setCurrentPath(File externalStoragePath) {
 		this.currentPath = externalStoragePath;
 	}
+	public int getCurrentPosition() {
+		// TODO Auto-generated method stub
+		return currentPosition;
+	}
 
+	public void setCurrentPosition(int position)
+	{
+		currentPosition = position;
+	}
 
 }

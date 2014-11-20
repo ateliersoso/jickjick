@@ -36,23 +36,11 @@
         android:orientation="horizontal"
         android:weightSum="10" >
 
-                <Button
+        <Button
             android:id="@+id/ButtonSelectAll"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="selectAllItem"
-            android:text="@string/play"
-            tools:ignore="NestedWeights"
-             />
-        
-                
-        <Button
-            android:id="@+id/ButtonAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="4.5"
-            android:onClick="playSelectedItem"
             android:text="@string/play"
             tools:ignore="NestedWeights" />
 
@@ -61,7 +49,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="4.5"
-            android:onClick="addSelectedItem"
+            android:text="@string/play"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/ButtonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="4.5"
             android:text="@string/add" />
     </LinearLayout>
 
