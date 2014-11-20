@@ -3,15 +3,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    
-    android:padding="5dp">
-    <TextView
+    android:background="@drawable/file_list_selector"
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <!--
+    <CheckBox
+        android:id="@+id/checkFileItem"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content" />
+    -->
+
+    <CheckedTextView
         android:id="@+id/fileName"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:padding="10dp"
-        android:color="#f3f3f3"/>
+        android:textSize="16sp"
+        android:color="#f3f3f3" />
+
 </LinearLayout>

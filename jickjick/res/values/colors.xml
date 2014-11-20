@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="color_file_list_selected">#ffcccccc</drawable>
+    <drawable name="color_file_list_normal">#ffffffff</drawable>
+    <drawable name="color_file_list_pressed">#55aaaaaa</drawable>
+</resources>

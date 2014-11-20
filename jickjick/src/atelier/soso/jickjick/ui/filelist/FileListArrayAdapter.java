@@ -37,7 +37,8 @@ public class FileListArrayAdapter extends ArrayAdapter<FileInfo>{
 //		if(item.getFile().isDirectory())
 //		{
 			TextView textView = (TextView) rowView.findViewById(R.id.fileName);
-			textView.setText(item.getName());
+			textView.setText(item.getFile().getName());
+			
 //		}
 		
 		return rowView;

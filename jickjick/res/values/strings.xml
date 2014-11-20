@@ -27,5 +27,6 @@
     <string name="title_activity_file_list">Sound Files</string>
     <string name="play">Play</string>
     <string name="add">Add</string>
+    <string name="selectAll">V</string>
 
 </resources>

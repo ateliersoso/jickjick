@@ -24,7 +24,8 @@
         android:layout_height="0dp"
         android:layout_weight="8"
         android:divider="#242424"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/file_list_selector" />
 
     <!-- bottom : buttons -->
 
@@ -35,11 +36,22 @@
         android:orientation="horizontal"
         android:weightSum="10" >
 
+                <Button
+            android:id="@+id/ButtonSelectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="selectAllItem"
+            android:text="@string/play"
+            tools:ignore="NestedWeights"
+             />
+        
+                
         <Button
             android:id="@+id/ButtonAdd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="4.5"
             android:onClick="playSelectedItem"
             android:text="@string/play"
             tools:ignore="NestedWeights" />
@@ -48,7 +60,7 @@
             android:id="@+id/ButtonPlay"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="4.5"
             android:onClick="addSelectedItem"
             android:text="@string/add" />
     </LinearLayout>
