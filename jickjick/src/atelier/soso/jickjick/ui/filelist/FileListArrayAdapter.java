@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import atelier.soso.jickjick.FileInfo;
 import atelier.soso.jickjick.R;
@@ -36,10 +40,15 @@ public class FileListArrayAdapter extends ArrayAdapter<FileInfo>{
 		//directory 그리기 
 //		if(item.getFile().isDirectory())
 //		{
-			TextView textView = (TextView) rowView.findViewById(R.id.fileName);
-			textView.setText(item.getFile().getName());
+			CheckBox checkBoxView = (CheckBox) rowView.findViewById(R.id.fileName);
+			//checkbox view가 클릭과 포커스 이벤트를 먹으면 listview의 onitemclicklistner를 타지않음.
+			//이벤트 처리를 listview로 넘기자.
+			checkBoxView.setClickable(false);
+			checkBoxView.setFocusable(false);
+ 
+			checkBoxView.setText(item.getFile().getName());
 			
-//		}
+			//		}
 		
 		return rowView;
 	}

@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import atelier.soso.jickjick.FileInfo;
 import atelier.soso.jickjick.R;
@@ -38,10 +41,11 @@ public class FileListFragment extends Fragment {
 			fileListView = (ListView)rootView.findViewById(R.id.filelist);
 			fileListView.setAdapter(adapter);
 
-			fileListView.setItemsCanFocus(false);
-			fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
+//			fileListView.setItemsCanFocus(false);
+//			fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			
 			fileListView.setOnItemClickListener(new OnItemClickListener() {
+			
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
@@ -55,7 +59,10 @@ public class FileListFragment extends Fragment {
 					}
 					else
 					{
-
+						//파일이면 체크 반전시키기.
+						//todo. 디렉토리는.. 롱버튼으로 체크 가능하도록 하자.
+						CheckBox selectedBox = (CheckBox)view.findViewById(R.id.fileName);
+						selectedBox.setChecked(!selectedBox.isChecked());
 					}
 					//file이면 check추가  ?
 					//check 추가하기
@@ -64,6 +71,8 @@ public class FileListFragment extends Fragment {
 				}
 
 			});
+			
+			
 		}
 
 
