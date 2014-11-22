@@ -334,6 +334,12 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 		case R.id.centerButton:
 			playSound();
 			break;
+		case R.id.leftButton:
+			soundPlayer.playBeforeTrack();
+			break;
+		case R.id.rightButton:
+			soundPlayer.playNextTrack();
+			break;
 		case R.id.topButton:
 			ABRepeatSound(view);
 			break;

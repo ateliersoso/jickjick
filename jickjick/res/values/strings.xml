@@ -28,6 +28,6 @@
     <string name="play">Play</string>
     <string name="add">Add</string>
     <string name="selectAll">V</string>
-    <string name="_must_implement_onarticleselectedlistener_">" must implement OnArticleSelectedListener)"</string>
-
+    <string name="this_song_is_the_last_song">마지막 곡입니다.</string>
+    <string name="this_song_is_the_first_song">첫 곡입니다.</string>
 </resources>

@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import atelier.soso.jickjick.*;	//for R.java
+import atelier.soso.jickjick.utils.ShortTask;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class SoundPlayer {
 
@@ -110,12 +113,76 @@ public class SoundPlayer {
 	}
 
 	public void playTrack(int position) {
-		// TODO Auto-generated method stub
+		//해당 위치의 파일 재생
 		FileInfo currentFilePath = stateManager.getCurrentPlayList().getItems().get(position);
-		
 		mediaPlayer.reset();
-	 
 		play(currentFilePath.getFile().getPath());
-		
+		//플레이 후 상태 갱신.
+		stateManager.setCurrentPosition(position);
 	}
+
+	public void playBeforeTrack(){
+		int currentIndex = stateManager.getCurrentPosition();
+		int nSoundFileCount = stateManager.getCurrentPlayList().getItems().size();
+		boolean isLoop = stateManager.isLoop();
+		
+		int originIndex = currentIndex;
+		//재생할 트랙 계산.
+		if(currentIndex == 0)
+		{
+			if(isLoop)	//마지막 트랙으로 보냄
+			{
+				currentIndex = nSoundFileCount-1;
+			}
+			else
+			{
+				ShortTask.showToast(curContext, R.string.this_song_is_the_first_song);
+			}
+		}
+		else
+		{
+			currentIndex--;
+		}
+		
+		showTrackInfo(currentIndex, nSoundFileCount, isLoop, originIndex);
+
+		
+		//다음곡 플레이
+		playTrack(currentIndex);
+	}
+	
+	public void playNextTrack() {
+		int currentIndex = stateManager.getCurrentPosition();
+		int nSoundFileCount = stateManager.getCurrentPlayList().getItems().size();
+		boolean isLoop = stateManager.isLoop();
+		
+		int originIndex = currentIndex; 
+		
+		//재생할 트랙 계산.
+		if(currentIndex + 1 >= nSoundFileCount )
+		{
+			if(isLoop)
+			{
+				currentIndex = 0;
+			}
+			else
+			{
+				ShortTask.showToast(curContext, R.string.this_song_is_the_last_song);
+			}
+		}
+		else
+		{
+			currentIndex ++;
+		}
+		
+		showTrackInfo(currentIndex, nSoundFileCount, isLoop, originIndex);
+		//다음곡 플레
+		playTrack(currentIndex);
+	}
+
+	private void showTrackInfo(int currentIndex, int nSoundFileCount,
+			boolean isLoop, int originIndex) {
+		Log.v("SoundPlayer", String.format("track[%d->%d]. TrackSize[%d]. isLoop[%b]", originIndex, currentIndex, nSoundFileCount, isLoop));
+	}
+	
 }
