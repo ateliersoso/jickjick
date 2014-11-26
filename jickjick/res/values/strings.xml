@@ -31,4 +31,6 @@
     <string name="selectAll">V</string>
     <string name="this_song_is_the_last_song">마지막 곡입니다.</string>
     <string name="this_song_is_the_first_song">첫 곡입니다.</string>
+    <string name="this_song_is_the_last_abrepeat">마지막 구간입니다.</string>
+    <string name="this_song_is_the_first_abrepeat">첫 구간입니다.</string>
 </resources>

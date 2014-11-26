@@ -394,7 +394,9 @@ int string navigation_drawer_close 0x7f0b0012
 int string navigation_drawer_open 0x7f0b0011
 int string play 0x7f0b0026
 int string selectAll 0x7f0b0028
+int string this_song_is_the_first_abrepeat 0x7f0b002c
 int string this_song_is_the_first_song 0x7f0b002a
+int string this_song_is_the_last_abrepeat 0x7f0b002b
 int string this_song_is_the_last_song 0x7f0b0029
 int string title_activity_display_message 0x7f0b0018
 int string title_activity_file_list 0x7f0b0025

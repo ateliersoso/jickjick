@@ -175,6 +175,50 @@ public class SoundPlayer {
 			boolean isLoop, int originIndex) {
 		Log.v("SoundPlayer", String.format("track[%d->%d]. TrackSize[%d]. isLoop[%b]", originIndex, currentIndex, nSoundFileCount, isLoop));
 	}
+
+
+	public void playPreviousABRepeat() {
+		
+		int currentIndex = stateManager.getCurrentABRepeatPosition();
+		
+		if(currentIndex == 0)
+		{
+			ShortTask.showToast(curContext, R.string.this_song_is_the_first_abrepeat);
+		}
+		else
+		{
+			currentIndex--;
+			
+			ABRepeat nextABRepeat = stateManager.getAbRepeatList().get( currentIndex );
+			stateManager.setCurrentABRepeat(nextABRepeat);
+			stateManager.setCurrentABRepeatPosition(currentIndex);
+	
+			seekTo( nextABRepeat.getStart() );
+		}
+		
+	}
+
+
+	public void playNextABRepeat() {
+		int currentIndex = stateManager.getCurrentABRepeatPosition();
+		int maxIndex = stateManager.getAbRepeatList().size();
+		
+		if(currentIndex + 1 >= maxIndex)
+		{
+			ShortTask.showToast(curContext, R.string.this_song_is_the_last_abrepeat);
+		}
+		else
+		{
+			currentIndex++;
+			
+			ABRepeat nextABRepeat = stateManager.getAbRepeatList().get( currentIndex );
+			stateManager.setCurrentABRepeat(nextABRepeat);
+			stateManager.setCurrentABRepeatPosition(currentIndex);		
+	
+			seekTo( nextABRepeat.getStart() );
+		}
+		
+	}
 	
 
 //	public boolean loadMedia(String filePath){

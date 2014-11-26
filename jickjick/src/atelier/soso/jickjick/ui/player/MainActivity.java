@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import atelier.soso.jickjick.ABRepeat;
 import atelier.soso.jickjick.R;
 import atelier.soso.jickjick.StateManager;
@@ -102,7 +100,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 			public void run() {
 				Message msg = new Message();
 				msg.what = MONITOR_STATE;
-				
+
 				refreshStateHandler.sendMessage(msg);
 
 			}
@@ -206,10 +204,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 		File externalStoragePath = Environment.getExternalStorageDirectory();
 		stateManager.setCurrentPath(externalStoragePath);
 		stateManager.setCurrentPosition(0);
-		currentA=0;
-		currentB=0;
-		fileID=0;
-
+		
 	}
 
 	@Override
@@ -329,30 +324,42 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 		int id = view.getId();
 		switch(id)
 		{
-		case R.id.bottomButton:
-			stopSound();
-			break;
 		case R.id.topLeftButton:
-			break;
-		case R.id.centerButton:
-			playSound();
-			break;
-		case R.id.bottomLeftButton:
-			soundPlayer.playBeforeTrack();
-			break;
-		case R.id.bottomRightButton:
-			soundPlayer.playNextTrack();
-			break;
-			//이전 구간 반복 점프
-		case R.id.leftButton:
-			break;
-			//다음 구간 반복 점프
-		case R.id.rightButton:
-			soundPlayer.playNextTrack();
+			soundPlayer.playPreviousABRepeat();
 			break;
 		case R.id.topButton:
 			ABRepeatSound(view);
 			break;
+		case R.id.topRightButton:
+			soundPlayer.playNextABRepeat();
+			break;
+
+			
+			//이전 구간 반복 점프
+			case R.id.leftButton:
+				break;
+			case R.id.centerButton:
+				playSound();
+				break;
+			
+				//다음 구간 반복 점프
+			case R.id.rightButton:
+				soundPlayer.playNextTrack();
+				break;
+				
+
+		case R.id.bottomLeftButton:
+			soundPlayer.playBeforeTrack();
+			break;
+		case R.id.bottomButton:
+			stopSound();
+			break;
+		case R.id.bottomRightButton:
+			soundPlayer.playNextTrack();
+			break;
+	
+			
+			
 		case R.id.ButtonLoop:
 			stateManager.setLoop(!stateManager.isLoop());
 			break;
@@ -361,66 +368,73 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 
 		CharSequence text = ((Button)(view)).getText();
 		Log.v("Player", String.format("%s is pressed.", text));
-		
+
 		return 1;
 	}
 
-	private int currentA;
-	private int currentB;
-	private int fileID;	//파일 오픈 지점에서 db에 저장된 파일 아이디를 담음.
+//	private int fileID;	//파일 오픈 지점에서 db에 저장된 파일 아이디를 담음.
 
 	private void ABRepeatSound(View view) {
-		switch( stateManager.getPlayerState() )
+		//ABrepeat mode 취소.
+		if(stateManager.isABRepeatMode())
 		{
-
-		case IDLE:		//1. A얻기
+			stateManager.setCurrentABRepeat(new ABRepeat(0, 0));
+			stateManager.setABRepeatMode(false);
+		}
+		else
 		{
-			//동작 : 
-			//상태 : 일반상태에서 다음 b를 누를때까지 기다림.
-			//화면 : 텍스트 버튼 이름 바꾸기 
-			
-			currentA = playingSeekBar.getProgress();
-			stateManager.setPlayerState( PlayerState.WAIT_B );
-		}
-		break;
+			switch( stateManager.getPlayerState() )
+			{
 
-		case WAIT_B:	//2. B얻기
-		{	
-			//동작 : 현재 AB모드 시작 지점으로 돌아가서 반복 시작. 
-			//상태 : AB모드 반복 상태로 변경.
-			//화면 : 텍스트 버튼 이름 일반 상태로 돌리기. 
-			
-			currentB = playingSeekBar.getProgress();
-			//ABRepeat 갱신.
-			ABRepeat currentABRepeat = new ABRepeat(currentA, currentB);
-			stateManager.setCurrentABRepeat(currentABRepeat);
-			
-			
-			//db에 insert
-//			soundDBOpenHelper.insertABRepeat(currentA, currentB, fileID);
-			stateManager.setPlayerState( PlayerState.IDLE );
-			stateManager.setABRepeatMode(true);
-			
-			//Current AB의 A로 보내기
-			soundPlayer.seekTo(currentA);
-			
-			String currentA_msec = changeMSecToMinType(currentA);
-			String currentB_msec = changeMSecToMinType(currentB);
-			Log.v("ABRepeat", String.format("ABRepeatMode : ABRepeat[%s:%s]", currentA_msec, currentB_msec));
-		}
-		
-		break;
+			case IDLE:		//1. A얻기
+			{
+				//동작 : 
+				//상태 : 일반상태에서 다음 b를 누를때까지 기다림.
+				//화면 : 텍스트 버튼 이름 바꾸기 
+
+				stateManager.setCurrentA(playingSeekBar.getProgress());
+				stateManager.setPlayerState( PlayerState.WAIT_B );
+			}
+			break;
+
+			case WAIT_B:	//2. B얻기
+			{	
+				//동작 : 현재 AB모드 시작 지점으로 돌아가서 반복 시작. 
+				//상태 : AB모드 반복 상태로 변경.
+				//화면 : 텍스트 버튼 이름 일반 상태로 돌리기. 
+
+				stateManager.setCurrentB(playingSeekBar.getProgress() );
+				//ABRepeat 갱신.
+				stateManager.addABRepeat(stateManager.getCurrentABRepeat() );
+
+				//db에 insert
+				//			soundDBOpenHelper.insertABRepeat(currentA, currentB, fileID);
+				stateManager.setPlayerState( PlayerState.IDLE );
+				stateManager.setABRepeatMode(true);
+
+				//Current AB의 A로 보내기
+				soundPlayer.seekTo(stateManager.getCurrentABRepeat().getStart());
+
+				String currentA_msec = changeMSecToMinType(stateManager.getCurrentABRepeat().getStart());
+				String currentB_msec = changeMSecToMinType(stateManager.getCurrentABRepeat().getEnd());
+				Log.v("ABRepeat", String.format("ABRepeatMode : ABRepeat[%s:%s]", currentA_msec, currentB_msec));
+			}
+			break;
+			default:
+				break;
+
+			}
 		}
 	}
 
 	private String changeMSecToMinType(int totalMSec) {
-		
+
 		int min=totalMSec / (1000 * 60);
 		int sec=(totalMSec  - min * (1000 * 60) ) / 1000;
 		int msec=totalMSec  - (min * (1000 * 60) + sec * 1000);
-		
+
 		String mSec = String.format("%2d:%2d.%3d", min, sec, msec);
-		
+
 		return mSec;
 	}
 
@@ -492,15 +506,15 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnPlaySoundListen
 			case MONITOR_STATE:
 			{
 				//구간 반복 모드에서 다시 돌아가기.
-				Log.v("ABRepeatMode", String.format("ABRepeatMode[%d:%d], current[%d]", currentA, currentB, soundPlayer.getCurrentPosition()));
+				Log.v("ABRepeatMode", String.format("ABRepeatMode[%d:%d], current[%d]", stateManager.getCurrentABRepeat().getStart(), stateManager.getCurrentABRepeat().getEnd(), soundPlayer.getCurrentPosition()));
 				boolean isABRepeatMode = stateManager.isABRepeatMode();
 				if(isABRepeatMode == true)
 				{
 					int currentposition = soundPlayer.getCurrentPosition();
 					//repeat모드에서 
-					if(currentposition > currentB)
+					if(currentposition > stateManager.getCurrentABRepeat().getEnd())
 					{
-						soundPlayer.seekTo(currentA);
+						soundPlayer.seekTo(stateManager.getCurrentABRepeat().getStart());
 						refreshScreen();
 					}
 				}

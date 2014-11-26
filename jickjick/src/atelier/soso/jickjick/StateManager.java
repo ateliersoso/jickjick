@@ -2,11 +2,12 @@ package atelier.soso.jickjick;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Application;
 
 public class StateManager extends Application {
-	public enum PlayerState {IDLE, WAIT_B};
+	public enum PlayerState {IDLE, WAIT_B, REPEAT_AB};
 	private PlayerState playerState;
 
 	private boolean isLoop;
@@ -21,6 +22,8 @@ public class StateManager extends Application {
 	private PlayList currentPlayList;	//
 
 	private int currentPosition;
+
+	private int currentABRepeatPosition;
 	
 	public StateManager() {
 		abRepeatList = new ArrayList<ABRepeat>();
@@ -87,6 +90,36 @@ public class StateManager extends Application {
 	public void setCurrentPosition(int position)
 	{
 		currentPosition = position;
+	}
+
+	public boolean addABRepeat(ABRepeat abRepeat) {
+		boolean result =abRepeatList.add(abRepeat);
+		//추가에 따라 abrepeat 추가 구현.
+		if(result)
+		{
+			Collections.sort(abRepeatList, new ABRepeatCompre());
+		}
+		//current index 갱신.
+		setCurrentABRepeatPosition(abRepeatList.indexOf(abRepeat));
+		return result; 
+	}
+
+	public void setCurrentABRepeatPosition(int position)
+	{
+		currentABRepeatPosition = position;
+	}
+	
+	public int getCurrentABRepeatPosition() {
+		return currentABRepeatPosition;
+	}
+
+	public void setCurrentA(int currentA) {
+		currentABRepeat.setStart( currentA );
+		
+	}
+
+	public void setCurrentB(int currentB) {
+		currentABRepeat.setEnd( currentB );
 	}
 
 }
