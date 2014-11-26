@@ -1,44 +1,36 @@
 package atelier.soso.jickjick.sound;
 
-import java.io.File;
 import java.io.IOException;
 
 import atelier.soso.jickjick.*;	//for R.java
 import atelier.soso.jickjick.utils.ShortTask;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.Toast;
 
 public class SoundPlayer {
-
 
 	MediaPlayer mediaPlayer = null;
 	Context curContext;
 	StateManager stateManager;
+	OnCompletionListener onCompletetoinListener = new OnCompletionListener() {
+		
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			//재생이 끝나면 다음트랙 재
+			int position = stateManager.getCurrentPosition();
+			playTrack(++position);
+		}
+	};
 	
 	public SoundPlayer(Context context) {
 		setContext(context);
 		mediaPlayer = MediaPlayer.create(curContext, R.raw.testmusic);
 		stateManager = (StateManager)context.getApplicationContext();
+		mediaPlayer.setOnCompletionListener(onCompletetoinListener);
 	}
 
-//	public boolean loadMedia(String filePath){
-//		boolean result = true;
-//		//reload
-//		if(mediaPlayer != null){
-//			mediaPlayer.stop();
-//			mediaPlayer.release();
-//			mediaPlayer = null;
-//			mediaPlayer = MediaPlayer.create(curContext, R.raw.testmusic);
-//		}
-//		else
-//		{
-//			mediaPlayer = MediaPlayer.create(curContext, R.raw.testmusic);
-//		}
-//		return result;
-//	}
 	
 	public int setContext(Context context)
 	{
@@ -56,19 +48,18 @@ public class SoundPlayer {
 		}
 		catch(NullPointerException e)
 		{
-			Log.e("NullPoint", "MediaPlayer is Null.");
+			Log.e("SoundPlayer", "MediaPlayer is Null.");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+			Log.e("SoundPlayer", "??");
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			ShortTask.showToast(curContext, "파일이 정상적인 상태가 아닙니다.");
 			e.printStackTrace();
 		}
 		return result;
@@ -185,4 +176,20 @@ public class SoundPlayer {
 		Log.v("SoundPlayer", String.format("track[%d->%d]. TrackSize[%d]. isLoop[%b]", originIndex, currentIndex, nSoundFileCount, isLoop));
 	}
 	
+
+//	public boolean loadMedia(String filePath){
+//		boolean result = true;
+//		//reload
+//		if(mediaPlayer != null){
+//			mediaPlayer.stop();
+//			mediaPlayer.release();
+//			mediaPlayer = null;
+//			mediaPlayer = MediaPlayer.create(curContext, R.raw.testmusic);
+//		}
+//		else
+//		{
+//			mediaPlayer = MediaPlayer.create(curContext, R.raw.testmusic);
+//		}
+//		return result;
+//	}
 }
